@@ -53,6 +53,7 @@ NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'miyakogi/seiya.vim'
 NeoBundle 'h1mesuke/vim-alignta'
 NeoBundle 'kana/vim-submode'
+NeoBundle 'kien/tabman.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 let g:EasyMotion_leader_key = '<Space><Space>'
 let g:EasyMotion_keys = 'fjdkslaureiwoqpvncm'
@@ -141,6 +142,7 @@ augroup END
 "-------------------------
 " lightline settings
 "-------------------------
+
 let g:lightline = {
       \ 'mode_map': {'c': 'NORMAL'},
       \ 'active': {
@@ -207,6 +209,36 @@ endfunction
 function! LightLineMode()
   return winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
+
+
+"-------------------------
+" lightline settings
+"-------------------------
+
+set showtabline=2
+
+function! MakeTabLine()
+endfunction
+
+set tabline=%!MakeTabLine()
+
+
+function! s:tabpage_label(n)
+  " n 番目のタブのラベルを返す
+endfunction
+
+
+function! MakeTabLine()
+  let titles = map(range(1, tabpagenr('$')), 's:tabpage_label(v:val)')
+  let sep = ' | '  " タブ間の区切り
+  let tabpages = join(titles, sep) . sep . '%#TabLineFill#%T'
+  let info = ''  " 好きな情報を入れる
+  return tabpages . '%=' . info  " タブリストを左に、情報を右に表示
+endfunction
+
+
+
+
 
 
 " ノーマルモード時だけ ; と : を入れ替える
